@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
     if (error) return callback(error);
 
     socket.emit("message", {
-      user: "ChatBot",
+      user: "Chatbot",
       text: `Welcome ${user.name} to ${room}`,
     });
     socket.broadcast.to(user.room).emit("message", {
@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
     const user = removeUser(socket.id);
     if (user) {
       io.to(user.room).emit("message", {
-        user: "ChatBot",
+        user: "Chatbot",
         text: `${user.name} disconnected`,
       });
       io.to(user.room).emit("roomData", {
