@@ -2,7 +2,7 @@
 const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
-const router = require("./routes/router");
+const router = require("../routes/router");
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 const cors = require("cors");
 
