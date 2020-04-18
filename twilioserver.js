@@ -4,8 +4,8 @@ const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 const { chatToken, videoToken, voiceToken } = require("./tokens");
 const cors = require("cors");
-
 const app = express();
+
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,6 +20,10 @@ const sendTokenResponse = (token, res) => {
     })
   );
 };
+
+app.get("/", (req, res) => {
+  res.send("server is running");
+});
 
 app.get("/api/greeting", (req, res) => {
   const name = req.query.name || "World";
