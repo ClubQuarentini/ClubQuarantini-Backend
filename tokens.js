@@ -14,7 +14,7 @@ const chatToken = (identity, config) => {
   const chatGrant = new ChatGrant({
     serviceSid: config.twilio.chatService,
   });
-  const token = generateToken(config);
+  const token = generateToken(config, (ttl = 3600));
   token.addGrant(chatGrant);
   token.identity = identity;
   return token;
@@ -27,7 +27,7 @@ const videoToken = (identity, room, config) => {
   } else {
     videoGrant = new VideoGrant();
   }
-  const token = generateToken(config);
+  const token = generateToken(config, (ttl = 3600));
   token.addGrant(videoGrant);
   token.identity = identity;
   return token;
@@ -45,7 +45,7 @@ const voiceToken = (identity, config) => {
       incomingAllow: config.twilio.incomingAllow,
     });
   }
-  const token = generateToken(config);
+  const token = generateToken(config, (ttl = 3600));
   token.addGrant(voiceGrant);
   token.identity = identity;
   return token;
