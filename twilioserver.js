@@ -116,7 +116,8 @@ io.on("connection", (socket) => {
   //   callback();
   // });
 
-  socket.on("makingDrink", ({ userName, roomName, drinkID }) => {
+  socket.on("makingDrink", ({ userName, roomName }) => {
+    console.log("making a drink", userName, roomName);
     removeDrinksPerUser(socket.id);
     io.to(roomName).emit("allDrinkOrders", {
       userOrders: getAllDrinkOrders(roomName),
@@ -132,7 +133,7 @@ io.on("connection", (socket) => {
       drinkID,
     });
 
-    socket.broadcast.to(newOrder.room).emit("newOrder", {
+    io.to(newOrder.room).emit("newOrder", {
       newOrder,
     });
 
