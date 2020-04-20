@@ -116,8 +116,15 @@ io.on("connection", (socket) => {
   //   callback();
   // });
 
+  socket.on("makingDrink", ({ userName, roomName, drinkID }) => {
+    removeDrinksPerUser(socket.id);
+    io.to(roomName).emit("allDrinkOrders", {
+      userOrders: getAllDrinkOrders(roomName),
+    });
+  });
+
   socket.on("drinkOrder", ({ userName, roomName, drinkID }) => {
-    console.log("drink order", userName, roomName, drinkID);
+    // console.log("drink order", userName, roomName, drinkID);
     const newOrder = addDrinkOrder({
       id: socket.id,
       userName,
@@ -136,10 +143,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnectWhenLoggingOut", () => {
     const user = removeUser(socket.id);
-    console.log("hey i am being disconected", user);
+    // console.log("hey i am being disconected", user);
     removeDrinksPerUser(socket.id);
     if (user) {
-      console.log("user", user);
+      // console.log("user", user);
       io.to(user.room).emit("message", {
         user: "Chatbot",
         text: `${user.name} disconnected`,

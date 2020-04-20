@@ -39,6 +39,16 @@ const getUsersInRoom = (room) => {
 const addDrinkOrder = ({ id, userName, roomName, drinkID }) => {
   name = userName.trim().toLowerCase();
   room = roomName.trim().toLowerCase();
+
+  const existingUserDrink = drinkQue.find(
+    (user) => user.room === room && user.name == name
+  );
+
+  if (existingUserDrink) {
+    return {
+      error: "Drink in que",
+    };
+  }
   const userOrder = { id, name, room, drinkID };
   drinkQue.push(userOrder);
   return userOrder;
