@@ -1,8 +1,9 @@
 const users = [];
+const drinkQue = [];
 
-const addUser = ({ id, name, room }) => {
-  name = name.trim().toLowerCase();
-  room = room.trim().toLowerCase();
+const addUser = ({ id, userName, roomName }) => {
+  name = userName.trim().toLowerCase();
+  room = roomName.trim().toLowerCase();
 
   const existingUser = users.find(
     (user) => user.room === room && user.name == name
@@ -20,7 +21,6 @@ const addUser = ({ id, name, room }) => {
 
 const removeUser = (id) => {
   const index = users.findIndex((user) => user.id === id);
-  console.log("index", index);
   if (index !== -1) {
     return users.splice(index, 1)[0];
   }
@@ -36,4 +36,38 @@ const getUsersInRoom = (room) => {
   });
 };
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+const addDrinkOrder = ({ id, userName, roomName, drinkID }) => {
+  name = userName.trim().toLowerCase();
+  room = roomName.trim().toLowerCase();
+  const userOrder = { id, name, room, drinkID };
+  drinkQue.push(userOrder);
+  return userOrder;
+};
+
+const getAllDrinkOrders = (room) => {
+  // console.log("this is the room", room);
+  let filtered = drinkQue.filter((user) => {
+    return user.room === room;
+  });
+  return filtered;
+};
+
+const removeDrinksPerUser = (id) => {
+  for (var i = drinkQue.length - 1; i >= 0; i--) {
+    if (drinkQue[i].id == id) {
+      drinkQue.splice(i, 1);
+    }
+  }
+  console.log("this is the new drink que", drinkQue);
+  return drinkQue;
+};
+
+module.exports = {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+  addDrinkOrder,
+  getAllDrinkOrders,
+  removeDrinksPerUser,
+};
