@@ -1,4 +1,16 @@
+require("dotenv").config();
 const config = require("./config");
+const client = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_SECRET
+);
+
+// var Twilio = require("twilio");
+// var client = new Twilio(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_API_SECRET,
+//   { accountSid: process.env.TWILIO_ACCOUNT_SID }
+// );
 const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
@@ -82,6 +94,19 @@ app.post("/voice/token", (req, res) => {
   const identity = req.body.identity;
   const token = voiceToken(identity, config);
   sendTokenResponse(token, res);
+});
+
+//get the inprogress rooms avalible
+app.get("/rooms", (req, res) => {
+  client.video
+    .rooms(roomSid)
+    .participants.list({ status: "connected" }, (err, participants) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(participants.length);
+    });
 });
 
 //setting up a socket
