@@ -97,15 +97,16 @@ app.post("/voice/token", (req, res) => {
 });
 
 //get the inprogress rooms avalible
-app.get("/rooms", (req, res) => {
+app.get("/rooms/:roomName", (req, res) => {
+  let roomName = req.params.roomName;
   client.video
-    .rooms(roomSid)
+    .rooms(roomName)
     .participants.list({ status: "connected" }, (err, participants) => {
       if (err) {
         console.error(err);
         return;
       }
-      console.log(participants.length);
+      res.send(participants);
     });
 });
 
