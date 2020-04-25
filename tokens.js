@@ -1,10 +1,6 @@
 const twilio = require("twilio");
 const AccessToken = twilio.jwt.AccessToken;
 const { ChatGrant, VideoGrant, VoiceGrant } = AccessToken;
-const cors = require("cors");
-const express = require("express");
-const app = express();
-app.use(cors());
 const generateToken = (config) => {
   return new AccessToken(
     config.twilio.accountSid,
