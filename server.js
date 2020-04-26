@@ -55,7 +55,7 @@ const sendTokenResponse = (token, res) => {
 };
 
 const calculateOrderAmount = (tipAmount) => {
-  return tipAmount * 100;
+  return parseFloat(tipAmount * 100.00);
 };
 
 app.post("/create-payment-intent", async (req, res) => {
