@@ -192,6 +192,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnectWhenLoggingOut", () => {
+    console.log("hey discconecting");
     const user = removeUser(socket.id);
     // console.log("hey i am being disconected", user);
     removeDrinksPerUser(socket.id);
