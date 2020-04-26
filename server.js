@@ -12,8 +12,8 @@ var client = new Twilio(
   { accountSid: process.env.TWILIO_ACCOUNT_SID }
 );
 
-const { resolve } = require('path');
-const stripe = require('stripe')('sk_test_XorTb1BbFmlsuSxBiXFOQ6KU00Q6CHEe7Z');
+const { resolve } = require("path");
+const stripe = require("stripe")("sk_test_XorTb1BbFmlsuSxBiXFOQ6KU00Q6CHEe7Z");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -39,7 +39,7 @@ const io = socketio(server);
 app.use(cors());
 const PORT = process.env.PORT || 3001;
 
-app.use(express.static('.'));
+app.use(express.static("."));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -54,20 +54,20 @@ const sendTokenResponse = (token, res) => {
   );
 };
 
-const calculateOrderAmount = items => {
-  return 100;
-}
+const calculateOrderAmount = (tipAmount) => {
+  return tipAmount * 100;
+};
 
-app.post('/create-payment-intent', async (req, res) => {
-  const {items} = req.body;
+app.post("/create-payment-intent", async (req, res) => {
+  const { tipAmount } = req.body;
 
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd"
+    amount: calculateOrderAmount(tipAmount),
+    currency: "usd",
   });
-  
+
   res.json({
-    clientSecret: paymentIntent.client_secret
+    clientSecret: paymentIntent.client_secret,
   });
 });
 
