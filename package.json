@@ -17,6 +17,7 @@
     "express-pino-logger": "^4.0.0",
     "pino-colada": "^1.6.1",
     "socket.io": "^2.3.0",
+    "stripe": "^8.46.0",
     "twilio": "^3.42.2"
   }
 }

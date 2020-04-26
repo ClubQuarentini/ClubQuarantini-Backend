@@ -1,16 +1,20 @@
 require("dotenv").config();
 const config = require("./config");
-const client = require("twilio")(
+// const client = require("twilio")(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_SECRET
+// );
+
+var Twilio = require("twilio");
+var client = new Twilio(
   process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_SECRET
+  process.env.TWILIO_API_SECRET,
+  { accountSid: process.env.TWILIO_ACCOUNT_SID }
 );
 
-// var Twilio = require("twilio");
-// var client = new Twilio(
-//   process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_API_SECRET,
-//   { accountSid: process.env.TWILIO_ACCOUNT_SID }
-// );
+const { resolve } = require("path");
+const stripe = require("stripe")("sk_test_XorTb1BbFmlsuSxBiXFOQ6KU00Q6CHEe7Z");
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
@@ -35,6 +39,8 @@ const io = socketio(server);
 app.use(cors());
 const PORT = process.env.PORT || 3001;
 
+app.use(express.static("."));
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
@@ -47,6 +53,23 @@ const sendTokenResponse = (token, res) => {
     })
   );
 };
+
+const calculateOrderAmount = (tipAmount) => {
+  return parseFloat(tipAmount * 100.00);
+};
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { tipAmount } = req.body;
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(tipAmount),
+    currency: "usd",
+  });
+
+  res.json({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("server is running");
