@@ -13,7 +13,7 @@ const client = require("twilio")(
 // );
 
 const { resolve } = require("path");
-const stripe = require("stripe")("sk_test_XorTb1BbFmlsuSxBiXFOQ6KU00Q6CHEe7Z");
+const stripe = require("stripe")(process.env.STRIP_SECRET_KEY);
 
 const express = require("express");
 const bodyParser = require("body-parser");
