@@ -166,7 +166,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("makingDrink", ({ userName, roomName }) => {
-    console.log("making a drink", userName, roomName);
+    // console.log("making a drink", userName, roomName);
     removeDrinksPerUser(socket.id);
     io.to(roomName).emit("allDrinkOrders", {
       userOrders: getAllDrinkOrders(roomName),
