@@ -138,7 +138,7 @@ io.on("connection", (socket) => {
   console.log("We have a new connection");
   socket.on("join", ({ userName, roomName }, callback) => {
     const { error, user } = addUser({ id: socket.id, userName, roomName });
-    console.log("this is the user", user);
+    // console.log("this is the user", user);
     if (error) return callback(error);
 
     socket.broadcast.to(user.room).emit("message", {
@@ -192,7 +192,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnectWhenLoggingOut", () => {
-    console.log("hey discconecting");
+    // console.log("hey discconecting");
     const user = removeUser(socket.id);
     // console.log("hey i am being disconected", user);
     removeDrinksPerUser(socket.id);
